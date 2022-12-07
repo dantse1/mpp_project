@@ -4,16 +4,25 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
+
+import edu.miu.domain.LibraryMember;
+import edu.miu.service.LibraryMemberService;
+
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+
 import javax.swing.JTable;
 import javax.swing.JScrollBar;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 
 public class MemberFrame extends JFrame {
 
@@ -27,6 +36,7 @@ public class MemberFrame extends JFrame {
 	private JTextField stateText;
 	private JTextField zipText;
 	private JTable listMemberTable;
+	LibraryMemberService libraryMemberService = LibraryMemberService.getService();
 
 	/**
 	 * Launch the application.
@@ -108,6 +118,7 @@ public class MemberFrame extends JFrame {
 		memberIDText.setBounds(74, 18, 166, 20);
 		panel_1.add(memberIDText);
 		memberIDText.setColumns(10);
+		memberIDText.setEditable(false);
 		
 		fnameText = new JTextField();
 		fnameText.setColumns(10);
@@ -147,6 +158,7 @@ public class MemberFrame extends JFrame {
 		JButton btnNewButton = new JButton("Add");
 		btnNewButton.setBounds(234, 170, 89, 23);
 		panel_1.add(btnNewButton);
+		btnNewButton.addActionListener(e -> submitButtonPress(e));
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBounds(0, 269, 585, 171);
@@ -165,5 +177,30 @@ public class MemberFrame extends JFrame {
 		scrollBar_1.setOrientation(JScrollBar.HORIZONTAL);
 		scrollBar_1.setBounds(10, 170, 565, 17);
 		panel_2.add(scrollBar_1);
+	}
+	
+	private void submitButtonPress(ActionEvent e) {
+		System.out.println("!!!!!! submitButtonPress !!!!!!!!!");
+		System.out.println("fnameText: " + fnameText.getText());
+		System.out.println("lnameText: " + lnameText.getText());
+		System.out.println("phoneText: " + phoneText.getText());
+		System.out.println("streetText: " + streetText.getText());
+		System.out.println("cityText: " + cityText.getText());
+		System.out.println("stateText: " + stateText.getText());
+		System.out.println("zipText: " + zipText.getText());
+		String fname = fnameText.getText();
+		String lname = lnameText.getText();
+		String phone = phoneText.getText();
+		String street = streetText.getText();
+		String city = cityText.getText();
+		String state = stateText.getText();
+		String zip = zipText.getText();
+		
+		LibraryMember libraryMember = libraryMemberService.createNewLibraryMember(fname, lname, phone, street, city, state, zip);
+		
+		
+		final JComponent[] inputs = new JComponent[] { new JLabel("Member \"" + fname + " " + lname + "\" has been created with ID: " + libraryMember.getMemberId()) };
+		JOptionPane.showMessageDialog(null, inputs, "Success", JOptionPane.PLAIN_MESSAGE);
+		
 	}
 }
