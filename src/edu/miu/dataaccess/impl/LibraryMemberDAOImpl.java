@@ -14,10 +14,9 @@ import java.util.Optional;
 
 import edu.miu.dataaccess.LibraryMemberDAO;
 import edu.miu.domain.LibraryMember;
+import edu.miu.util.StorageUtils;
 
 public class LibraryMemberDAOImpl implements LibraryMemberDAO {
-	public static final String OUTPUT_DIR = System.getProperty("user.dir") + File.separator + "src" + File.separator
-			+ "edu" + File.separator + "miu" + File.separator + "storage";
 	
 	LibraryMemberDAOImpl(){
 		
@@ -28,7 +27,7 @@ public class LibraryMemberDAOImpl implements LibraryMemberDAO {
 		HashMap<String, LibraryMember> mems = readMemberMap();
 		String memberId = member.getMemberId();
 		mems.put(memberId, member);
-		saveToStorage(StorageType.MEMBERS, mems);
+		StorageUtils.saveToStorage(StorageType.MEMBERS, mems);
 	}
 
 	@Override
@@ -53,49 +52,10 @@ public class LibraryMemberDAOImpl implements LibraryMemberDAO {
 	public HashMap<String, LibraryMember> readMemberMap() {
 		// Returns a Map with name/value pairs being
 		// memberId -> LibraryMember
-		HashMap<String, LibraryMember> hm = (HashMap<String, LibraryMember>) readFromStorage(StorageType.MEMBERS);
+		HashMap<String, LibraryMember> hm = (HashMap<String, LibraryMember>) StorageUtils.readFromStorage(StorageType.MEMBERS);
 		if (null == hm) { // data file not found
 			hm = new HashMap<String, LibraryMember>();
 		}
 		return hm;
-	}
-
-	static void saveToStorage(StorageType type, Object ob) {
-		ObjectOutputStream out = null;
-		try {
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, type.toString());
-			System.out.println("save to " + path.toAbsolutePath());
-			out = new ObjectOutputStream(Files.newOutputStream(path));
-			out.writeObject(ob);
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (out != null) {
-				try {
-					out.close();
-				} catch (Exception e) {
-				}
-			}
-		}
-	}
-
-	static Object readFromStorage(StorageType type) {
-		ObjectInputStream in = null;
-		Object retVal = null;
-		try {
-			Path path = FileSystems.getDefault().getPath(OUTPUT_DIR, type.toString());
-			in = new ObjectInputStream(Files.newInputStream(path));
-			retVal = in.readObject();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (in != null) {
-				try {
-					in.close();
-				} catch (Exception e) {
-				}
-			}
-		}
-		return retVal;
 	}
 }
