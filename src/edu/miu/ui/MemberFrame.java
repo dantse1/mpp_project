@@ -6,6 +6,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 
 import edu.miu.domain.LibraryMember;
 import edu.miu.service.LibraryMemberService;
@@ -14,8 +16,10 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import javax.swing.JTable;
 import javax.swing.JScrollBar;
@@ -26,6 +30,10 @@ import javax.swing.JComponent;
 
 public class MemberFrame extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8594854466912010665L;
 	private JPanel contentPane;
 	private JTextField memberIDText;
 	private JTextField fnameText;
@@ -35,7 +43,7 @@ public class MemberFrame extends JFrame {
 	private JTextField cityText;
 	private JTextField stateText;
 	private JTextField zipText;
-	private JTable listMemberTable;
+	private DefaultTableModel defaultTableModel;
 	LibraryMemberService libraryMemberService = LibraryMemberService.getService();
 
 	/**
@@ -82,77 +90,72 @@ public class MemberFrame extends JFrame {
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
-		JLabel memberIDLabel = new JLabel("Member ID");
-		memberIDLabel.setBounds(10, 21, 57, 14);
-		panel_1.add(memberIDLabel);
 		
 		JLabel memFirstNameLabel = new JLabel("First Name");
-		memFirstNameLabel.setBounds(10, 58, 57, 14);
+		memFirstNameLabel.setBounds(15, 21, 57, 14);
+		memFirstNameLabel.setSize( memFirstNameLabel.getPreferredSize() );
 		panel_1.add(memFirstNameLabel);
 		
 		JLabel memLastNameLabel = new JLabel("Last Name");
-		memLastNameLabel.setBounds(10, 96, 57, 14);
+		memLastNameLabel.setBounds(15, 58, 57, 14);
+		memLastNameLabel.setSize( memLastNameLabel.getPreferredSize() );
 		panel_1.add(memLastNameLabel);
 		
 		JLabel memTelephoneLabel = new JLabel("Telephone");
-		memTelephoneLabel.setBounds(10, 134, 68, 14);
+		memTelephoneLabel.setBounds(15, 96, 57, 14);
+		memTelephoneLabel.setSize( memTelephoneLabel.getPreferredSize() );
 		panel_1.add(memTelephoneLabel);
 		
 		JLabel streetLable = new JLabel("Street");
-		streetLable.setBounds(295, 21, 46, 14);
+		streetLable.setBounds(15, 134, 68, 14);
 		panel_1.add(streetLable);
 		
 		JLabel cityLabel = new JLabel("City");
-		cityLabel.setBounds(295, 58, 46, 14);
+		cityLabel.setBounds(295, 21, 46, 14);
 		panel_1.add(cityLabel);
 		
 		JLabel zipLable = new JLabel("Zip");
-		zipLable.setBounds(295, 134, 46, 14);
+		zipLable.setBounds(295, 96, 46, 14);
 		panel_1.add(zipLable);
 		
 		JLabel stateLable = new JLabel("State");
-		stateLable.setBounds(295, 96, 46, 14);
+		stateLable.setBounds(295, 58, 46, 14);
 		panel_1.add(stateLable);
 		
-		memberIDText = new JTextField();
-		memberIDText.setBounds(74, 18, 166, 20);
-		panel_1.add(memberIDText);
-		memberIDText.setColumns(10);
-		memberIDText.setEditable(false);
 		
 		fnameText = new JTextField();
 		fnameText.setColumns(10);
-		fnameText.setBounds(74, 55, 166, 20);
+		fnameText.setBounds(83, 18, 166, 20);
 		panel_1.add(fnameText);
 		
 		lnameText = new JTextField();
 		lnameText.setColumns(10);
-		lnameText.setBounds(74, 93, 166, 20);
+		lnameText.setBounds(83, 55, 166, 20);
 		panel_1.add(lnameText);
 		
 		phoneText = new JTextField();
 		phoneText.setColumns(10);
-		phoneText.setBounds(74, 131, 166, 20);
+		phoneText.setBounds(83, 93, 166, 20);
 		panel_1.add(phoneText);
 		
 		streetText = new JTextField();
 		streetText.setColumns(10);
-		streetText.setBounds(345, 18, 166, 20);
+		streetText.setBounds(83, 131, 166, 20);
 		panel_1.add(streetText);
 		
 		cityText = new JTextField();
 		cityText.setColumns(10);
-		cityText.setBounds(345, 55, 166, 20);
+		cityText.setBounds(345, 18, 166, 20);
 		panel_1.add(cityText);
 		
 		stateText = new JTextField();
 		stateText.setColumns(10);
-		stateText.setBounds(345, 93, 166, 20);
+		stateText.setBounds(345, 55, 166, 20);
 		panel_1.add(stateText);
 		
 		zipText = new JTextField();
 		zipText.setColumns(10);
-		zipText.setBounds(345, 131, 166, 20);
+		zipText.setBounds(345, 93, 166, 20);
 		panel_1.add(zipText);
 		
 		JButton btnNewButton = new JButton("Add");
@@ -160,23 +163,34 @@ public class MemberFrame extends JFrame {
 		panel_1.add(btnNewButton);
 		btnNewButton.addActionListener(e -> submitButtonPress(e));
 		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBounds(0, 269, 585, 171);
-		contentPane.add(panel_2);
-		panel_2.setLayout(null);
 		
-		listMemberTable = new JTable();
-		listMemberTable.setBounds(10, 11, 565, 176);
-		panel_2.add(listMemberTable);
+		JTable table = new JTable();
+
+		defaultTableModel = new DefaultTableModel(0, 0){
+		    /**
+			 * 
+			 */
+			private static final long serialVersionUID = 8560505484306217552L;
+
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       //all cells false
+		       return false;
+		    }
+		};
+		String columnNames[]={"MemberID","FirstName","LastName", "Phone", "Street", "City"};
+
+		defaultTableModel.setColumnIdentifiers(columnNames);
+		reloadTableData();
+		table.setModel(defaultTableModel);
+
+		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane.setBounds(10, 270, 570, 150);
+		contentPane.add(scrollPane);
+
 		
-		JScrollBar scrollBar = new JScrollBar();
-		scrollBar.setBounds(558, 0, 17, 176);
-		panel_2.add(scrollBar);
 		
-		JScrollBar scrollBar_1 = new JScrollBar();
-		scrollBar_1.setOrientation(JScrollBar.HORIZONTAL);
-		scrollBar_1.setBounds(10, 170, 565, 17);
-		panel_2.add(scrollBar_1);
+		
 	}
 	
 	private void submitButtonPress(ActionEvent e) {
@@ -200,7 +214,30 @@ public class MemberFrame extends JFrame {
 		
 		
 		final JComponent[] inputs = new JComponent[] { new JLabel("Member \"" + fname + " " + lname + "\" has been created with ID: " + libraryMember.getMemberId()) };
-		JOptionPane.showMessageDialog(null, inputs, "Success", JOptionPane.PLAIN_MESSAGE);
+		JOptionPane.showMessageDialog(null, inputs, "Success", JOptionPane.NO_OPTION);
+		fnameText.setText("");
+		lnameText.setText("");
+		fnameText.setText("");
+		phoneText.setText("");
+		streetText.setText("");
+		cityText.setText("");
+		stateText.setText("");
+		zipText.setText("");
+		
+		reloadTableData();
 		
 	}
+	private void reloadTableData() {
+		
+		while(defaultTableModel.getRowCount()>0) {
+			defaultTableModel.removeRow(0);
+		}
+		
+		List<LibraryMember> listLibraryMember = libraryMemberService.getAllLibraryMember();
+		for (LibraryMember libraryMember : listLibraryMember) {
+			defaultTableModel.addRow(new Object[] { libraryMember.getMemberId(), libraryMember.getFirstName(), libraryMember.getLastName(), 
+					libraryMember.getPhone(), libraryMember.getAddress().getStreet(), libraryMember.getAddress().getCity()});
+		}
+	}
+	
 }
