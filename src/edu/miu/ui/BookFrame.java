@@ -5,6 +5,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import edu.miu.service.BookService;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -19,12 +22,13 @@ import java.awt.event.ActionEvent;
 public class BookFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JTextField isbnText;
+	private JTextField titleText;
 	private JTextField authorText;
-	private JTextField textField_3;
-	private JTextField textField_4;
+	private JTextField copiesNumText;
+	private JTextField checkoutDaysText;
 	private JTable table;
+	private BookService bookService;
 
 	/**
 	 * Launch the application.
@@ -46,6 +50,8 @@ public class BookFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public BookFrame() {
+		bookService = new BookService();
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 601, 490);
 		contentPane = new JPanel();
@@ -91,33 +97,43 @@ public class BookFrame extends JFrame {
 		panel_1.add(maxCheckoutLengthLabel);
 		
 		JButton btnAddBook = new JButton("Add");
+		btnAddBook.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				String isbn = isbnText.getText();
+				String title = titleText.getText();
+				int copiesNum = Integer.parseInt(copiesNumText.getText());
+				int checkoutDays = Integer.parseInt(checkoutDaysText.getText());
+				
+				 bookService.addBook(isbn, title, checkoutDays, copiesNum);
+			}
+		});
 		btnAddBook.setBounds(414, 131, 109, 23);
 		panel_1.add(btnAddBook);
 		
-		textField = new JTextField();
-		textField.setBounds(67, 18, 184, 20);
-		panel_1.add(textField);
-		textField.setColumns(10);
+		isbnText = new JTextField();
+		isbnText.setBounds(67, 18, 184, 20);
+		panel_1.add(isbnText);
+		isbnText.setColumns(10);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(67, 55, 184, 20);
-		panel_1.add(textField_1);
+		titleText = new JTextField();
+		titleText.setColumns(10);
+		titleText.setBounds(67, 55, 184, 20);
+		panel_1.add(titleText);
 		
 		authorText = new JTextField();
 		authorText.setColumns(10);
 		authorText.setBounds(67, 90, 184, 20);
 		panel_1.add(authorText);
 		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(442, 18, 133, 20);
-		panel_1.add(textField_3);
+		copiesNumText = new JTextField();
+		copiesNumText.setColumns(10);
+		copiesNumText.setBounds(442, 18, 133, 20);
+		panel_1.add(copiesNumText);
 		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(442, 55, 133, 20);
-		panel_1.add(textField_4);
+		checkoutDaysText = new JTextField();
+		checkoutDaysText.setColumns(10);
+		checkoutDaysText.setBounds(442, 55, 133, 20);
+		panel_1.add(checkoutDaysText);
 		
 		JButton btnNewButton = new JButton("+");
 		btnNewButton.addActionListener(new ActionListener() {
