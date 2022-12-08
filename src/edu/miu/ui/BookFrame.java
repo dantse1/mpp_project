@@ -50,7 +50,8 @@ public class BookFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public BookFrame() {
-		bookService = new BookService();
+		bookService = BookService.getService();
+		//System.out.println(bookService.getAllBooks().get(0).getTitle());
 		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 601, 490);

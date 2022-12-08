@@ -20,15 +20,27 @@ public class Book implements Serializable {
 		this.title = title;
 		this.maxCheckoutLength = maxCheckoutLength;
 		bookcopies = new ArrayList<BookCopy>();
-		authors = new ArrayList();
+		authors = new ArrayList<Author>();
 		
 		bookcopies.add(new BookCopy(this, 1, true));
 		if (numCopies > 1) {
-			for (int i = 1; i <= numCopies; i++) {
+			for (int i = 1; i < numCopies; i++) {
 				bookcopies.add(new BookCopy(this, i + 1, true));
 			}
 		}
 
+	}
+	
+	public BookCopy addNewBookCopy() {
+		int maxCopyNumber = 1;
+		for(BookCopy bookCopy:bookcopies) {
+			if(bookCopy.getCopyNumber() > maxCopyNumber) {
+				maxCopyNumber = bookCopy.getCopyNumber();
+			}
+		}
+		BookCopy bookCopy = new BookCopy(this, maxCopyNumber + 1, true);
+		bookcopies.add(bookCopy);
+		return bookCopy;
 	}
 	
 	public void addAuthor(Author author) {
