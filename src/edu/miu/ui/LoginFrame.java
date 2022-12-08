@@ -76,26 +76,29 @@ public class LoginFrame extends JFrame {
 		addAccount();
 		String userText;
 		String pwdText;
-		String role = "";
+		boolean flag = false;
 
 		userText = userIDField.getText();
 		pwdText = passwordField.getText();
 
 		for (Account acc : accountList) {
-			System.out.println(acc.getRole());
 			if (userText.equalsIgnoreCase(acc.getUserID()) && pwdText.equalsIgnoreCase(acc.getPassword())) {
-				role = acc.getRole();
+				flag = true;
+				AdminFrame adminFrame = new AdminFrame();
+				adminFrame.setVisible(true);
 				return acc;
 
-			} else {
-				JOptionPane.showMessageDialog(this, "Invalid Username or Password");
-				continue;
 			}
-
 		}
+		if (!flag) {
+			JOptionPane.showMessageDialog(this, "Invalid Username or Password");
+			userIDField.setText("");
+			passwordField.setText("");
+		}
+
 		return null;
 	}
-	
+
 	public void createUserAndPasswPanel() {
 		JPanel panel = new JPanel();
 		panel.setBounds(238, 0, 337, 440);
@@ -134,7 +137,7 @@ public class LoginFrame extends JFrame {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(104, 215, 178, 20);
 		panel.add(passwordField);
-		
+
 		JLabel lblNewLabel = new JLabel("");
 		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Admin\\Pictures\\9780226092812.jpg"));
 		lblNewLabel.setBounds(0, 0, 228, 440);
