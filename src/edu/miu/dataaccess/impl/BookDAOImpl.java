@@ -30,7 +30,7 @@ public class BookDAOImpl implements BookDAO {
 	}
 
 	@Override
-	public void saveNewBook(Book book) {
+	public void saveBook(Book book) {
 
 		HashMap<String, Book> books = readBookMap();
 		books.put(book.getIsbn(), book);

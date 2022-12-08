@@ -3,9 +3,12 @@ package edu.miu.test;
 import java.util.List;
 import java.util.Optional;
 
+import edu.miu.dataaccess.BookDAO;
 import edu.miu.dataaccess.LibraryMemberDAO;
 import edu.miu.dataaccess.impl.LibraryMemberDAOImpl;
 import edu.miu.dataaccess.impl.ObjectDAOFactory;
+import edu.miu.domain.Book;
+import edu.miu.domain.BookCopy;
 import edu.miu.domain.LibraryMember;
 
 public class TestDataAccess {
@@ -19,28 +22,44 @@ public class TestDataAccess {
 //		LibraryMember mem3 = new LibraryMember("2349", "mmm", "asdasd", "dsgd", "AXN 4th St", "BBBairfield", "IMMA",
 //				"52556");
 
-		LibraryMemberDAO dao = ObjectDAOFactory.getLibraryMemberDAO();
+//		LibraryMemberDAO dao = ObjectDAOFactory.getLibraryMemberDAO();
 //		dao.saveNewMember(mem1);
 //		dao.saveNewMember(mem2);
 //		dao.saveNewMember(mem3);
 
-		List<LibraryMember> list = dao.getAllLibraryMember();
-		for(int i = 0; i< list.size(); i++) {
-			LibraryMember member = list.get(i);
-			System.out.println("id: "+ member.getMemberId());
-			System.out.println("fname: "+ member.getFirstName());
-			System.out.println("lname: "+ member.getLastName());
-			System.out.println("phone: "+ member.getPhone());
-			System.out.println("city: "+ member.getAddress().getCity());
-			System.out.println("state: "+ member.getAddress().getState());
-			System.out.println("street: "+ member.getAddress().getStreet());
-			System.out.println("zip: "+ member.getAddress().getZip());
+//		List<LibraryMember> list = dao.getAllLibraryMember();
+//		for(int i = 0; i< list.size(); i++) {
+//			LibraryMember member = list.get(i);
+//			System.out.println("id: "+ member.getMemberId());
+//			System.out.println("fname: "+ member.getFirstName());
+//			System.out.println("lname: "+ member.getLastName());
+//			System.out.println("phone: "+ member.getPhone());
+//			System.out.println("city: "+ member.getAddress().getCity());
+//			System.out.println("state: "+ member.getAddress().getState());
+//			System.out.println("street: "+ member.getAddress().getStreet());
+//			System.out.println("zip: "+ member.getAddress().getZip());
+//		}
+//		Optional<LibraryMember> libraryMemberOpt = dao.getLibraryMemberById("2349");
+//		if (libraryMemberOpt.isPresent()) {
+//			LibraryMember libMember = libraryMemberOpt.get();
+//			System.out.println(libMember.getFirstName() + " - " + libMember.getAddress().getCity());
+//		}
+		
+		
+//		Book book = new Book("abc-123", "Java book 1", 10, 3);
+		
+		BookDAO bookDAO =  ObjectDAOFactory.getBookDAO();
+//		bookDAO.saveNewBook(book);
+		
+		Optional<Book> aaa = bookDAO.getBookById("abc-123");
+		if(aaa.isPresent()) {
+			Book book = aaa.get();
+			System.out.println(book.getBookcopies().size());
+			BookCopy copy = book.addNewBookCopy();
+			bookDAO.saveBook(book);
+			System.out.println("COPY "+copy.getCopyNumber());
 		}
-		Optional<LibraryMember> libraryMemberOpt = dao.getLibraryMemberById("2349");
-		if (libraryMemberOpt.isPresent()) {
-			LibraryMember libMember = libraryMemberOpt.get();
-			System.out.println(libMember.getFirstName() + " - " + libMember.getAddress().getCity());
-		}
+
 
 	}
 }

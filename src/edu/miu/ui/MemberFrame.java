@@ -35,7 +35,6 @@ public class MemberFrame extends JFrame {
 	 */
 	private static final long serialVersionUID = 8594854466912010665L;
 	private JPanel contentPane;
-	private JTextField memberIDText;
 	private JTextField fnameText;
 	private JTextField lnameText;
 	private JTextField phoneText;

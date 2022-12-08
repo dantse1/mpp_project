@@ -19,7 +19,7 @@ public class LibraryMemberService {
 		// generate id
 		String memberId = "mem-"+String.format("%05d", (libraryMemberDAO.getAllLibraryMember().size() + 1));
 		LibraryMember libraryMember = new LibraryMember(memberId, firstName, lastName, phone, street, city, state, zip);
-		libraryMemberDAO.saveNewMember(libraryMember);
+		libraryMemberDAO.saveMember(libraryMember);
 		return libraryMember;
 	}
 	

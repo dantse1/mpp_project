@@ -1,12 +1,5 @@
 package edu.miu.dataaccess.impl;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +16,7 @@ public class LibraryMemberDAOImpl implements LibraryMemberDAO {
 	}
 
 	@Override
-	public void saveNewMember(LibraryMember member) {
+	public void saveMember(LibraryMember member) {
 		HashMap<String, LibraryMember> mems = readMemberMap();
 		String memberId = member.getMemberId();
 		mems.put(memberId, member);
