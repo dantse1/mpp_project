@@ -5,6 +5,9 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import edu.miu.service.BookService;
+
 import java.awt.Color;
 import javax.swing.JLabel;
 import java.awt.Font;
@@ -15,16 +18,22 @@ import javax.swing.JTable;
 import javax.swing.JScrollBar;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.Choice;
+import java.awt.Button;
+import java.awt.Checkbox;
+import javax.swing.JComboBox;
+import java.awt.Label;
+import javax.swing.SwingConstants;
 
 public class BookFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField authorText;
-	private JTextField textField_3;
-	private JTextField textField_4;
+	private JTextField isbnText;
+	private JTextField titleText;
+	private JTextField copiesNumText;
+	private JTextField checkoutDaysText;
 	private JTable table;
+	private BookService bookService;
 
 	/**
 	 * Launch the application.
@@ -46,6 +55,9 @@ public class BookFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public BookFrame() {
+		bookService = BookService.getService();
+		//System.out.println(bookService.getAllBooks().get(0).getTitle());
+		
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 601, 490);
 		contentPane = new JPanel();
@@ -66,7 +78,7 @@ public class BookFrame extends JFrame {
 		panel.add(addMemberLabel);
 		
 		JPanel panel_1 = new JPanel();
-		panel_1.setBounds(0, 65, 585, 178);
+		panel_1.setBounds(0, 65, 585, 289);
 		contentPane.add(panel_1);
 		panel_1.setLayout(null);
 		
@@ -79,7 +91,7 @@ public class BookFrame extends JFrame {
 		panel_1.add(titleLabel);
 		
 		JLabel authorLabel = new JLabel("Author");
-		authorLabel.setBounds(10, 93, 57, 14);
+		authorLabel.setBounds(10, 99, 57, 14);
 		panel_1.add(authorLabel);
 		
 		JLabel numCopiesLabel = new JLabel("Number of Copies");
@@ -90,56 +102,88 @@ public class BookFrame extends JFrame {
 		maxCheckoutLengthLabel.setBounds(273, 58, 159, 14);
 		panel_1.add(maxCheckoutLengthLabel);
 		
-		JButton btnAddBook = new JButton("Add");
-		btnAddBook.setBounds(414, 131, 109, 23);
-		panel_1.add(btnAddBook);
-		
-		textField = new JTextField();
-		textField.setBounds(67, 18, 184, 20);
-		panel_1.add(textField);
-		textField.setColumns(10);
-		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(67, 55, 184, 20);
-		panel_1.add(textField_1);
-		
-		authorText = new JTextField();
-		authorText.setColumns(10);
-		authorText.setBounds(67, 90, 184, 20);
-		panel_1.add(authorText);
-		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(442, 18, 133, 20);
-		panel_1.add(textField_3);
-		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(442, 55, 133, 20);
-		panel_1.add(textField_4);
-		
-		JButton btnNewButton = new JButton("+");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton btnAddBook = new JButton("Save");
+		btnAddBook.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				String isbn = isbnText.getText();
+				String title = titleText.getText();
+				int copiesNum = Integer.parseInt(copiesNumText.getText());
+				int checkoutDays = Integer.parseInt(checkoutDaysText.getText());
 				
+				 bookService.addBook(isbn, title, checkoutDays, copiesNum);
 			}
 		});
-		btnNewButton.setBounds(256, 93, 41, 17);
-		panel_1.add(btnNewButton);
+		btnAddBook.setBounds(437, 266, 107, 23);
+		panel_1.add(btnAddBook);
+		
+		isbnText = new JTextField();
+		isbnText.setBounds(67, 18, 184, 20);
+		panel_1.add(isbnText);
+		isbnText.setColumns(10);
+		
+		titleText = new JTextField();
+		titleText.setColumns(10);
+		titleText.setBounds(67, 55, 184, 20);
+		panel_1.add(titleText);
+		
+		copiesNumText = new JTextField();
+		copiesNumText.setColumns(10);
+		copiesNumText.setBounds(442, 18, 133, 20);
+		panel_1.add(copiesNumText);
+		
+		checkoutDaysText = new JTextField();
+		checkoutDaysText.setColumns(10);
+		checkoutDaysText.setBounds(442, 55, 133, 20);
+		panel_1.add(checkoutDaysText);
+		
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(67, 94, 508, 27);
+		panel_1.add(comboBox);
+		
+		JPanel panel_2 = new JPanel();
+		panel_2.setBounds(6, 133, 553, 121);
+		panel_1.add(panel_2);
+		panel_2.setLayout(null);
+		
+		JLabel lblNewLabel_1 = new JLabel("Frist name");
+		lblNewLabel_1.setBounds(6, 5, 66, 16);
+		lblNewLabel_1.setVerticalAlignment(SwingConstants.TOP);
+		panel_2.add(lblNewLabel_1);
+		
+		JLabel lblNewLabel = new JLabel("Last name");
+		lblNewLabel.setBounds(145, 5, 64, 16);
+		panel_2.add(lblNewLabel);
+		
+		JLabel lblPhone = new JLabel("Phone");
+		lblPhone.setBounds(271, 5, 38, 16);
+		panel_2.add(lblPhone);
+		
+		JLabel lblCredentials = new JLabel("Credentials");
+		lblCredentials.setBounds(404, 5, 71, 16);
+		panel_2.add(lblCredentials);
+		
+		JLabel lblCity = new JLabel("City");
+		lblCity.setBounds(155, 61, 25, 16);
+		panel_2.add(lblCity);
+		
+		JLabel lblState = new JLabel("State");
+		lblState.setBounds(271, 61, 31, 16);
+		panel_2.add(lblState);
+		
+		JLabel lblZip = new JLabel("Zip");
+		lblZip.setBounds(415, 58, 20, 16);
+		panel_2.add(lblZip);
+		
+		JLabel lblAddress = new JLabel("Address");
+		lblAddress.setBounds(6, 33, 51, 16);
+		panel_2.add(lblAddress);
+		
+		JLabel lblStreet = new JLabel("Street");
+		lblStreet.setBounds(6, 58, 36, 16);
+		panel_2.add(lblStreet);
 		
 		table = new JTable();
-		table.setBounds(10, 254, 565, 197);
+		table.setBounds(10, 376, 565, 61);
 		contentPane.add(table);
-		
-		JScrollBar scrollBar = new JScrollBar();
-		scrollBar.setBounds(558, 254, 17, 197);
-		contentPane.add(scrollBar);
-		
-		JScrollBar scrollBar_1 = new JScrollBar();
-		scrollBar_1.setOrientation(JScrollBar.HORIZONTAL);
-		scrollBar_1.setBounds(10, 434, 565, 17);
-		contentPane.add(scrollBar_1);
 	}
-
 }

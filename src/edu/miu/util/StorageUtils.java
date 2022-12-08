@@ -41,8 +41,9 @@ public class StorageUtils {
 			in = new ObjectInputStream(Files.newInputStream(path));
 			retVal = in.readObject();
 		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
+			System.out.println("New storage file is created at: " + e.getMessage());
+		} 
+		finally {
 			if (in != null) {
 				try {
 					in.close();
