@@ -27,7 +27,14 @@ public class TestDataAccess {
 		List<LibraryMember> list = dao.getAllLibraryMember();
 		for(int i = 0; i< list.size(); i++) {
 			LibraryMember member = list.get(i);
-			System.out.println(member.getMemberId());
+			System.out.println("id: "+ member.getMemberId());
+			System.out.println("fname: "+ member.getFirstName());
+			System.out.println("lname: "+ member.getLastName());
+			System.out.println("phone: "+ member.getPhone());
+			System.out.println("city: "+ member.getAddress().getCity());
+			System.out.println("state: "+ member.getAddress().getState());
+			System.out.println("street: "+ member.getAddress().getStreet());
+			System.out.println("zip: "+ member.getAddress().getZip());
 		}
 		Optional<LibraryMember> libraryMemberOpt = dao.getLibraryMemberById("2349");
 		if (libraryMemberOpt.isPresent()) {

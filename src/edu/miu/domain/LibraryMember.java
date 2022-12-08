@@ -2,7 +2,7 @@ package edu.miu.domain;
 
 import java.io.Serializable;
 
-public class LibraryMember extends Person implements Serializable{
+public class LibraryMember extends Person implements Serializable, Comparable<LibraryMember> {
 	/**
 	 * 
 	 */
@@ -24,5 +24,13 @@ public class LibraryMember extends Person implements Serializable{
 
 	public void setMemberId(String memberId) {
 		this.memberId = memberId;
+	}
+	
+	@Override
+	public int compareTo(LibraryMember u) {
+		if (getMemberId() == null || u.getMemberId() == null) {
+			return 0;
+		}
+		return -getMemberId().compareTo(u.getMemberId());
 	}
 }
