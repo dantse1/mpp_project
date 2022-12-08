@@ -8,5 +8,5 @@ import edu.miu.domain.LibraryMember;
 public interface BookDAO { 
 	public List<Book> getAllBook();
 	public Optional<Book> getBookById(String bookId);
-	public void saveNewBook(Book book);
+	public void saveBook(Book book);
 }
