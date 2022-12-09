@@ -53,7 +53,7 @@ public class LoginFrame extends JFrame {
 	 */
 	public LoginFrame() {
 		setBackground(Color.DARK_GRAY);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 601, 490);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -84,8 +84,9 @@ public class LoginFrame extends JFrame {
 		for (Account acc : accountList) {
 			if (userText.equalsIgnoreCase(acc.getUserID()) && pwdText.equalsIgnoreCase(acc.getPassword())) {
 				flag = true;
-				AdminFrame adminFrame = new AdminFrame();
+				AdminFrame adminFrame = new AdminFrame(acc);
 				adminFrame.setVisible(true);
+				this.setVisible(false);
 				return acc;
 
 			}
@@ -139,7 +140,7 @@ public class LoginFrame extends JFrame {
 		panel.add(passwordField);
 
 		JLabel lblNewLabel = new JLabel("");
-		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Admin\\Pictures\\9780226092812.jpg"));
+		lblNewLabel.setIcon(new ImageIcon("src\\edu\\miu\\ui\\library.png"));
 		lblNewLabel.setBounds(0, 0, 228, 440);
 		contentPane.add(lblNewLabel);
 	}

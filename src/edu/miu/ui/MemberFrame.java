@@ -43,7 +43,7 @@ public class MemberFrame extends JFrame {
 	private JTextField stateText;
 	private JTextField zipText;
 	private DefaultTableModel defaultTableModel;
-	LibraryMemberService libraryMemberService = LibraryMemberService.getService();
+	private LibraryMemberService libraryMemberService = LibraryMemberService.getService();
 
 	/**
 	 * Launch the application.
@@ -65,7 +65,7 @@ public class MemberFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public MemberFrame() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 601, 490);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

@@ -1,10 +1,8 @@
 package edu.miu.ui;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 import java.awt.Font;
 import java.awt.Color;
@@ -13,31 +11,24 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.border.TitledBorder;
 
+import edu.miu.domain.Account;
+
 public class AdminFrame extends JFrame {
 
 	private JPanel contentPane;
+	private Account account;
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AdminFrame frame = new AdminFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public AdminFrame() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	public AdminFrame(Account account) {
+		this.account = account;
+		String role = account.getRole();
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 601, 490);
 		contentPane = new JPanel();
 		contentPane.setBorder(new TitledBorder(null, "", TitledBorder.CENTER, TitledBorder.TOP, null, null));
@@ -52,9 +43,10 @@ public class AdminFrame extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel("Put the role in here");
+		JLabel lblNewLabel = new JLabel("Role: "+ role.toUpperCase(), SwingConstants.CENTER);
 		lblNewLabel.setFont(new Font("UTM Colossalis", Font.PLAIN, 24));
 		lblNewLabel.setBounds(155, 24, 301, 48);
+		lblNewLabel.setForeground(Color.RED);
 		panel.add(lblNewLabel);
 
 		JButton btnAddBook = new JButton("Add Book");
@@ -64,6 +56,9 @@ public class AdminFrame extends JFrame {
 				book.setVisible(true);
 			}
 		});
+		if(role.equalsIgnoreCase("Librarian")) {
+			btnAddBook.setEnabled(false);
+		}
 		btnAddBook.setBackground(Color.LIGHT_GRAY);
 		btnAddBook.setBounds(58, 152, 119, 74);
 		contentPane.add(btnAddBook);
@@ -75,6 +70,9 @@ public class AdminFrame extends JFrame {
 				memberFrame.setVisible(true);
 			}
 		});
+		if(role.equalsIgnoreCase("Librarian")) {
+			btnAddMember.setEnabled(false);
+		}
 		btnAddMember.setBackground(Color.LIGHT_GRAY);
 		btnAddMember.setBounds(236, 152, 119, 74);
 		contentPane.add(btnAddMember);
@@ -86,6 +84,9 @@ public class AdminFrame extends JFrame {
 				bookCheckoutFrame.setVisible(true);
 			}
 		});
+		if(role.equalsIgnoreCase("Admin")) {
+			btnCheckoutBook.setEnabled(false);
+		}
 		btnCheckoutBook.setBackground(Color.LIGHT_GRAY);
 		btnCheckoutBook.setBounds(58, 287, 119, 74);
 		contentPane.add(btnCheckoutBook);
@@ -97,6 +98,9 @@ public class AdminFrame extends JFrame {
 				copybookFrame.setVisible(true);
 			}
 		});
+		if(role.equalsIgnoreCase("Librarian")) {
+			btnAddBookCopy.setEnabled(false);
+		}
 		btnAddBookCopy.setBackground(Color.LIGHT_GRAY);
 		btnAddBookCopy.setBounds(236, 287, 119, 74);
 		contentPane.add(btnAddBookCopy);
@@ -108,6 +112,9 @@ public class AdminFrame extends JFrame {
 				memberListFrame.setVisible(true);
 			}
 		});
+		if(role.equalsIgnoreCase("Librarian")) {
+			btnSeeAllMembers.setEnabled(false);
+		}
 		btnSeeAllMembers.setBackground(Color.LIGHT_GRAY);
 		btnSeeAllMembers.setBounds(420, 152, 119, 74);
 		contentPane.add(btnSeeAllMembers);
@@ -119,6 +126,9 @@ public class AdminFrame extends JFrame {
 				bookList.setVisible(true);
 			}
 		});
+		if(role.equalsIgnoreCase("Librarian")) {
+			btnSeeAllBooks.setEnabled(false);
+		}
 		btnSeeAllBooks.setBackground(Color.LIGHT_GRAY);
 		btnSeeAllBooks.setBounds(420, 287, 119, 74);
 		contentPane.add(btnSeeAllBooks);
@@ -127,7 +137,15 @@ public class AdminFrame extends JFrame {
 		btnLogOut.setForeground(Color.RED);
 		btnLogOut.setBackground(Color.WHITE);
 		btnLogOut.setBounds(250, 404, 89, 23);
+		btnLogOut.addActionListener(e -> logout());
+		
 		contentPane.add(btnLogOut);
+	}
+	
+	private void logout() {
+		LoginFrame loginFrame = new LoginFrame();
+		loginFrame.setVisible(true);
+		this.setVisible(false);
 	}
 
 }
