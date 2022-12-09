@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,11 +21,16 @@ import edu.miu.domain.Account;
 
 public class LoginFrame extends JFrame {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static final String INSTANCE = null;
 	private JPanel contentPane;
 	private JTextField userIDField;
 	private JPasswordField passwordField;
 	private static List<Account> accountList = new ArrayList<>();
+	private static Account account;
 
 	/**
 	 * Launch the application.
@@ -51,15 +57,49 @@ public class LoginFrame extends JFrame {
 		setBounds(100, 100, 601, 490);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		JPanel panel_1 = new JPanel();
-		panel_1.setBackground(Color.BLACK);
-		panel_1.setBounds(10, 0, 218, 440);
-		contentPane.add(panel_1);
+		createUserAndPasswPanel();
+	}
 
+	public void addAccount() {
+		Account account1 = new Account("Admin", "101", "123");
+		Account account2 = new Account("Librarian", "102", "123");
+		Account account3 = new Account("BOTH", "103", "123");
+		accountList.add(account1);
+		accountList.add(account2);
+		accountList.add(account3);
+	}
+
+	public Account validateAccount() {
+		addAccount();
+		String userText;
+		String pwdText;
+		boolean flag = false;
+
+		userText = userIDField.getText();
+		pwdText = passwordField.getText();
+
+		for (Account acc : accountList) {
+			if (userText.equalsIgnoreCase(acc.getUserID()) && pwdText.equalsIgnoreCase(acc.getPassword())) {
+				flag = true;
+				AdminFrame adminFrame = new AdminFrame();
+				adminFrame.setVisible(true);
+				return acc;
+
+			}
+		}
+		if (!flag) {
+			JOptionPane.showMessageDialog(this, "Invalid Username or Password");
+			userIDField.setText("");
+			passwordField.setText("");
+		}
+
+		return null;
+	}
+
+	public void createUserAndPasswPanel() {
 		JPanel panel = new JPanel();
 		panel.setBounds(238, 0, 337, 440);
 		contentPane.add(panel);
@@ -68,7 +108,7 @@ public class LoginFrame extends JFrame {
 		JButton btnLogin = new JButton("Login");
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				validateAccount("Admin");
+				account = validateAccount();
 			}
 		});
 		btnLogin.setBounds(89, 312, 138, 23);
@@ -97,32 +137,10 @@ public class LoginFrame extends JFrame {
 		passwordField = new JPasswordField();
 		passwordField.setBounds(104, 215, 178, 20);
 		panel.add(passwordField);
-	}
 
-	public void addAccount() {
-		Account account1 = new Account("Admin", "101", "123");
-		Account account2 = new Account("Librarian", "102", "123");
-		Account account3 = new Account("BOTH", "103", "123");
-		accountList.add(account1);
-		accountList.add(account2);
-		accountList.add(account3);
-	}
-
-	public void validateAccount(String role) {
-		String userText;
-		String pwdText;
-
-		userText = userIDField.getText();
-		pwdText = passwordField.getName();
-
-		for (Account acc : accountList) {
-			if (userText.equalsIgnoreCase(acc.getUserID()) && pwdText.equalsIgnoreCase(acc.getPassword())) {
-				if (role.equalsIgnoreCase("Admin")) {
-					JOptionPane.showMessageDialog(this, "Login Successful");
-				}
-			} else {
-				JOptionPane.showMessageDialog(this, "Invalid Username or Password");
-			}
-		}
+		JLabel lblNewLabel = new JLabel("");
+		lblNewLabel.setIcon(new ImageIcon("C:\\Users\\Admin\\Pictures\\9780226092812.jpg"));
+		lblNewLabel.setBounds(0, 0, 228, 440);
+		contentPane.add(lblNewLabel);
 	}
 }
